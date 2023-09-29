@@ -24,10 +24,10 @@ import ca.maplenetwork.waitifylock.Helpers.NavigationHelper;
 import ca.maplenetwork.waitifylock.Helpers.PermissionHelper;
 
 public class MainActivity extends AppCompatActivity {
-    static Button allowAccessibilityButton;
+    private static Button allowAccessibilityButton;
     SwitchMaterial protectPermissionsSwitch;
-    static SwitchMaterial preventUninstallSwitch;
-    static SwitchMaterial appLockEnabledSwitch;
+    private static SwitchMaterial preventUninstallSwitch;
+    private static SwitchMaterial appLockEnabledSwitch;
 
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Variables.AppLockEnabled(this, isChecked);
+            Variables.AppLocked(this, false);
         });
 
         setAppLockPinButton.setOnClickListener(v -> {
@@ -152,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void refreshAccessibilityButton(Context context) {
+        if (allowAccessibilityButton == null) {
+            return;
+        }
+
         if (PermissionHelper.IsAccessibilityServiceGranted(context)) {
             allowAccessibilityButton.setEnabled(false);
         } else {
@@ -168,14 +173,22 @@ public class MainActivity extends AppCompatActivity {
             }
     );
 
-    public static void disablePin() {
+    public static void disablePin(Context context) {
+        if (appLockEnabledSwitch == null) {
+            Variables.AppLockEnabled(context, false);
+            return;
+        }
         appLockEnabledSwitch.setChecked(false);
     }
 
-    public static void disableAdmin() {
-        if (preventUninstallSwitch != null) {
-            preventUninstallSwitch.setChecked(false);
+    public static void disableAdmin(Context context) {
+        if (preventUninstallSwitch == null) {
+            DevicePolicyManager mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+            ComponentName mAdminName = new ComponentName(context, DeviceAdminSample.class);
+            mDPM.removeActiveAdmin(mAdminName);
+            return;
         }
+        preventUninstallSwitch.setChecked(false);
     }
 
     @Override
