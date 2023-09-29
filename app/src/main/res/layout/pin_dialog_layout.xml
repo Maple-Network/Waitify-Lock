@@ -1,0 +1,32 @@
+<!-- res/layout/pin_dialog_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/pinEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter PIN"
+        android:inputType="number|numberPassword"
+        android:maxLength="8" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/confirmPinEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirm PIN"
+        android:inputType="number|numberPassword"
+        android:maxLength="8" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/showPinCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Pin"
+        android:textSize="14sp" />
+
+</LinearLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Waitify Lock</string>
+    <string name="accessibility_service_description">Allows Waitify Lock to use the accessibility service to prevent permission removal when enabled.</string>
+    <string name="device_admin_description">Allows Waitify Lock to prevent its own uninstallation when activated in settings.</string>
+</resources>
