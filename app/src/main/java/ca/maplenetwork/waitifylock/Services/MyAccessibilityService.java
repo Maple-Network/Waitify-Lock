@@ -28,70 +28,64 @@ public class MyAccessibilityService extends AccessibilityService {
     }
 
     public void SetAccessibilityInfo() {
-        String[] AppsEnabledArray = new String[]{("com.android.settings")};
-
+        String[] AppsEnabledArray = new String[]{("com.android.settings"),("com.google.android.permissioncontroller")};
 
         AccessibilityServiceInfo info = new AccessibilityServiceInfo();
         info.packageNames = AppsEnabledArray;
-        info.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
-        info.eventTypes += AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
+        info.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_VISUAL;
         setServiceInfo(info);
     }
 
-    // Check when an event occurs
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         //Log.d(TAG, "onAccessibilityEvent: " + event);
-        //printAllNodes(getRootInActiveWindow());
+
         if (Variables.ProtectPermissions(this)) {
             CheckProtectedServices(event);
         }
     }
     
     private void CheckProtectedServices(AccessibilityEvent event) {
-        if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getClassName() == null) {
+        if (event.getClassName() == null) {
             return;
         }
 
-        // Accessibility
-        if (event.getText().toString().contains("Waitify")) {
-            if (!checkNodes(new String[]{"accessibility service"}, getRootInActiveWindow())) {
-                return;
+        switch (event.getPackageName().toString()) {
+            // App Security
+            case "com.google.android.permissioncontroller": {
+                if (checkNodes(new String[]{"Waitify"}, getRootInActiveWindow())) {
+                    Log.d(TAG, "CheckProtectedServices: Permissions");
+                    OpenAndroidSettings(this);
+                }
             }
 
-            Log.d(TAG, "CheckProtectedServices: Accessibility");
-            OpenAndroidSettings(this);
-        }
-
-        switch (event.getText().toString()) {
-            // App Info
-            case "[App info]": {
-                if (!checkNodes(new String[]{"Waitify"}, getRootInActiveWindow())) {
+            case "com.android.settings": {
+                // Accessibility
+                if (checkNodes(new String[]{"Waitify","accessibility service"}, getRootInActiveWindow())) {
+                    Log.d(TAG, "CheckProtectedServices: Accessibility");
+                    OpenAndroidSettings(this);
                     return;
                 }
 
-                Log.d(TAG, "CheckProtectedServices: App Info");
-                OpenAndroidSettings(this);
-            }
-
-            // Usage Access
-            case "[Usage access]": {
-                if (!checkNodes(new String[]{"Waitify"}, getRootInActiveWindow())) {
+                // Usage Access
+                if (checkNodes(new String[]{"Waitify","Permit usage access"}, getRootInActiveWindow())) {
+                    Log.d(TAG, "CheckProtectedServices: Usage Access");
+                    OpenAndroidSettings(this);
                     return;
                 }
 
-                Log.d(TAG, "CheckProtectedServices: Usage Access");
-                OpenAndroidSettings(this);
-            }
+                // App info
+                if (checkNodes(new String[]{"Waitify","App info"}, getRootInActiveWindow())) {
+                    Log.d(TAG, "CheckProtectedServices: App Info");
+                    OpenAndroidSettings(this);
+                    return;
+                }
 
-            default: {
-                if (event.getClassName().toString().equals("com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd")) {
+
+                // Device Admin
+                if (checkNodes(new String[]{"Waitify", "Deactivate", "Device Admin App"}, getRootInActiveWindow())) {
                     if (event.getContentDescription() == "Activate device admin app?") {
-                        return;
-                    }
-
-                    if (!checkNodes(new String[]{"Waitify", "Deactivate"}, getRootInActiveWindow())) {
                         return;
                     }
 
@@ -108,7 +102,6 @@ public class MyAccessibilityService extends AccessibilityService {
         }
 
         for (String s : text) {
-            Log.d(TAG, "checkNodes:");
             if (rootNode.findAccessibilityNodeInfosByText(s).isEmpty()) {
                 return false;
             }
@@ -122,7 +115,6 @@ public class MyAccessibilityService extends AccessibilityService {
         MainActivity.refreshAccessibilityButton(this);
     }
 
-    //When Accessibility Service Gets Disabled
     @Override
     public boolean onUnbind(Intent intent) {
         MainActivity.refreshAccessibilityButton(this);
