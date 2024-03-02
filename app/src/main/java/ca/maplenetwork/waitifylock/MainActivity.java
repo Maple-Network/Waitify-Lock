@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,39 +18,36 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import ca.maplenetwork.waitifylock.Helpers.AppLockHelper;
 import ca.maplenetwork.waitifylock.Helpers.NavigationHelper;
 import ca.maplenetwork.waitifylock.Helpers.PermissionHelper;
+import ca.maplenetwork.waitifylock.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    private static Button allowAccessibilityButton;
-    SwitchMaterial protectPermissionsSwitch;
-    private static SwitchMaterial preventUninstallSwitch;
-    private static SwitchMaterial appLockEnabledSwitch;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        allowAccessibilityButton = findViewById(R.id.allowAccessibilityButton);
-        protectPermissionsSwitch = findViewById(R.id.protectPermissionsSwitch);
-        preventUninstallSwitch = findViewById(R.id.preventUninstallSwitch);
-        appLockEnabledSwitch = findViewById(R.id.appLockEnabledSwitch);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         loadAllOptions();
 
-        Button setAppLockPinButton = findViewById(R.id.setAppLockPinButton);
+        setListeners();
+    }
 
-        allowAccessibilityButton.setOnClickListener((view) -> {
-            Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+    private void setListeners() {
+        binding.allowAccessibilityButton.setOnClickListener((view) -> {
+            NavigationHelper.INSTANCE.openAccessibilitySettings(this);
         });
 
-        protectPermissionsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.usageAccessButton.setOnClickListener((view) -> {
+            NavigationHelper.INSTANCE.openUsageAccessSettings(this);
+        });
+
+        binding.protectPermissionsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (AppLocked()) {
                 return;
             }
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             Variables.ProtectPermissions(this, isChecked);
         });
 
-        preventUninstallSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.preventUninstallSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (AppLocked()) {
                 return;
             }
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        appLockEnabledSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.appLockEnabledSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (AppLocked()) {
                 return;
             }
@@ -85,12 +83,11 @@ public class MainActivity extends AppCompatActivity {
             Variables.AppLocked(this, false);
         });
 
-        setAppLockPinButton.setOnClickListener(v -> {
+        binding.setAppLockPinButton.setOnClickListener(v -> {
             if (AppLocked()) {
                 return;
             }
 
-            // Inflate the custom layout
             LayoutInflater inflater = getLayoutInflater();
             View view = inflater.inflate(R.layout.pin_dialog_layout, null);
             EditText pinEditText = view.findViewById(R.id.pinEditText);
@@ -98,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
             MaterialCheckBox showPinCheckBox = view.findViewById(R.id.showPinCheckBox);
 
             AlertDialog alertDialog = new AlertDialog.Builder(this)
-
                     .setTitle("Set PIN")
                     .setView(view)
                     .setPositiveButton("Confirm", null)
@@ -145,51 +141,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadAllOptions() {
-        refreshAccessibilityButton(this);
         boolean isAdminActive = ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).isAdminActive(new ComponentName(this, DeviceAdminSample.class));
-        preventUninstallSwitch.setChecked(isAdminActive);
-        protectPermissionsSwitch.setChecked(Variables.ProtectPermissions(this));
-        appLockEnabledSwitch.setChecked(Variables.AppLockEnabled(this));
-    }
 
-    public static void refreshAccessibilityButton(Context context) {
-        if (allowAccessibilityButton == null) {
-            return;
-        }
+        binding.allowAccessibilityButton.setEnabled(!PermissionHelper.INSTANCE.isAccessibilityServiceGranted(this));
+        binding.usageAccessButton.setEnabled(!PermissionHelper.INSTANCE.isUsageAccessGranted(this));
 
-        if (PermissionHelper.IsAccessibilityServiceGranted(context)) {
-            allowAccessibilityButton.setEnabled(false);
-        } else {
-            allowAccessibilityButton.setEnabled(true);
-        }
+        binding.protectPermissionsSwitch.setChecked(Variables.ProtectPermissions(this));
+        binding.preventUninstallSwitch.setChecked(isAdminActive);
+
+        binding.appLockEnabledSwitch.setChecked(Variables.AppLockEnabled(this));
     }
 
     private final ActivityResultLauncher<Intent> deviceAdminResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() != RESULT_OK) {
-                    preventUninstallSwitch.setChecked(false);
+                    binding.preventUninstallSwitch.setChecked(false);
                 }
             }
     );
-
-    public static void disablePin(Context context) {
-        if (appLockEnabledSwitch == null) {
-            Variables.AppLockEnabled(context, false);
-            return;
-        }
-        appLockEnabledSwitch.setChecked(false);
-    }
-
-    public static void disableAdmin(Context context) {
-        if (preventUninstallSwitch == null) {
-            DevicePolicyManager mDPM = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-            ComponentName mAdminName = new ComponentName(context, DeviceAdminSample.class);
-            mDPM.removeActiveAdmin(mAdminName);
-            return;
-        }
-        preventUninstallSwitch.setChecked(false);
-    }
 
     @Override
     protected void onPause() {
@@ -203,7 +173,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             AppLockHelper.showAppLock(this, getSupportFragmentManager());
         } catch (Exception e) {
-            NavigationHelper.OpenHomeScreen(this);
+            NavigationHelper.INSTANCE.openHomeScreen(this);
         }
+        loadAllOptions();
     }
 }

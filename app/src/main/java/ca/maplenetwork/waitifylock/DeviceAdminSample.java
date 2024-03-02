@@ -15,9 +15,7 @@ public class DeviceAdminSample extends DeviceAdminReceiver {
     }
 
     @Override
-    public void onDisabled(Context context, Intent intent) {
-        MainActivity.disableAdmin(context);
-    }
+    public void onDisabled(Context context, Intent intent) {}
 
     @Override
     public void onPasswordChanged(Context context, Intent intent, UserHandle userHandle) {}

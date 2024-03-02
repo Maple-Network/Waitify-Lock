@@ -62,14 +62,10 @@ public class PinDialogFragment extends DialogFragment {
         String enteredPin = pinEditText.getText().toString();
         String savedPin = Variables.AppLockPin(getContext());
         if (savedPin.equals("")) {
-            MainActivity.disablePin(getContext());
+            Variables.AppLockEnabled(requireContext(), false);
             return true;
         }
 
-        if (savedPin.equals(enteredPin)) {
-            return true;
-        }
-
-        return false;
+        return savedPin.equals(enteredPin);
     }
 }

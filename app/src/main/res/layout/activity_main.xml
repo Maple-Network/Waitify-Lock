@@ -30,7 +30,6 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/allowAccessibilityText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -40,6 +39,30 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/allowAccessibilityButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grant"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:gravity="center"
+                android:minHeight="45dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Allow usage access."
+                    android:textColor="?android:attr/colorForeground"
+                    android:textSize="20dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/usage_access_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Grant"
@@ -73,7 +96,6 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/appLockPinText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
