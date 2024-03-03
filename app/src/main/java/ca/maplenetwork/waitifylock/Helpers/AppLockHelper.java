@@ -1,7 +1,6 @@
 package ca.maplenetwork.waitifylock.Helpers;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.fragment.app.FragmentManager;
 

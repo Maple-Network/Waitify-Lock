@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log
 import ca.maplenetwork.waitifylock.MainActivity
 
 object NavigationHelper {
@@ -35,11 +34,12 @@ object NavigationHelper {
     fun openUsageAccessSettings(context: Context) {
         try {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).apply {
-                data = Uri.fromParts("package", "ca.maplenetwork.waitify", null)
+                data = Uri.fromParts("package", "ca.maplenetwork.waitifylock", null)
             }
             context.startActivity(intent)
         } catch (e: Exception) {
-            Log.e("TAG", "openUsageAccessSettings: ", e)
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            context.startActivity(intent)
         }
     }
 }

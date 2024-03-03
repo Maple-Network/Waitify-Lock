@@ -1,7 +1,6 @@
 package ca.maplenetwork.waitifylock.Helpers;
 
 import android.content.Context;
-import android.os.UserManager;
 import android.provider.Settings;
 
 public class PhoneHelper {

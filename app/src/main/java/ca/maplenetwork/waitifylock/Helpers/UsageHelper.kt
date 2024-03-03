@@ -6,7 +6,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import ca.maplenetwork.waitifylock.Variables
-import java.util.concurrent.TimeUnit
 
 object UsageHelper {
     private var currentLoop: Thread? = null
