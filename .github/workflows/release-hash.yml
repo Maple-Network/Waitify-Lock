@@ -23,7 +23,8 @@ jobs:
 
       - name: Get release asset download URL
         run: |
-          echo "ASSET_URL=$(gh release view --json assets -q '.assets[0].browser_download_url')" >> $GITHUB_ENV
+          ASSET_URL=$(gh release view --json assets -q '.assets[0].url')
+          echo "Asset URL is $ASSET_URL"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
