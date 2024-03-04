@@ -23,15 +23,14 @@ jobs:
 
       - name: Get release asset download URL
         run: |
-          ASSET_URL=$(gh release view --json assets -q '.assets[0].url')
+          echo "ASSET_URL=$(gh release view --json assets -q '.assets[0].browser_download_url')" >> $GITHUB_ENV
           echo "Asset URL is $ASSET_URL"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download release asset
         run: |
-          curl -L -o ./asset.apk -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" $ASSET_URL
-
+          curl -L -o ./asset.apk -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$ASSET_URL"
       
       - name: Calculate SHA-256 Hash
         run: |
