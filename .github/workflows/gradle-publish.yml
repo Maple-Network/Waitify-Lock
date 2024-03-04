@@ -18,11 +18,20 @@ jobs:
     - name: Extract Commit Message
       id: commit-message
       run: |
-        IFS=$'\n' read -r -d '' COMMIT_TITLE COMMIT_DESCRIPTION <<< "$(git log -1 --pretty=%B)"
+        COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+        COMMIT_TITLE=$(echo "$COMMIT_MESSAGE" | head -n 1)
+        COMMIT_DESCRIPTION=$(echo "$COMMIT_MESSAGE" | tail -n +2 | sed '/^$/d')
+        
+        if [[ -z "$COMMIT_DESCRIPTION" ]]; then
+          echo "No commit description provided."
+          COMMIT_DESCRIPTION="No description"
+        fi
+        
         echo "Commit title: $COMMIT_TITLE"
         echo "Commit description: $COMMIT_DESCRIPTION"
+        echo "Commit message: $COMMIT_MESSAGE
         echo "COMMIT_TITLE=$COMMIT_TITLE" >> $GITHUB_ENV
-        echo "COMMIT_DESCRIPTION=$COMMIT_DESCRIPTION" >> $GITHUB_ENV
+        echo "COMMIT_DESCRIPTION=$(echo $COMMIT_DESCRIPTION)" >> $GITHUB_ENV
 
     - name: Check if Commit is a Release
       run: |
