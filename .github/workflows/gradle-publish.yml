@@ -29,7 +29,6 @@ jobs:
         
         echo "Commit title: $COMMIT_TITLE"
         echo "Commit description: $COMMIT_DESCRIPTION"
-        echo "Commit message: $COMMIT_MESSAGE" # Corrected this line
         echo "COMMIT_TITLE=$COMMIT_TITLE" >> $GITHUB_ENV
         echo "COMMIT_DESCRIPTION=$COMMIT_DESCRIPTION" >> $GITHUB_ENV # Simplified this line
 
@@ -76,8 +75,8 @@ jobs:
         RELEASE_TAG=$(date +%Y%m%d%H%M%S) # or use your APK's version
         echo "Creating release $RELEASE_TAG"
         gh release create $RELEASE_TAG \
-          --title "New Release $RELEASE_TAG" \
-          --notes "Automatically generated release" \
+          --title "$COMMIT_TITLE" \
+          --notes "$COMMIT_DESCRIPTION" \
           --draft
         echo "::set-output name=tag_name::$RELEASE_TAG"
       env:
