@@ -22,11 +22,8 @@ jobs:
           java-version: '11'
 
       - name: Get release asset download URL
-        id: get-url
         run: |
-          # Use GitHub CLI to get the asset download URL
-          ASSET_URL=$(gh release view --json assets -q '.assets[0].url')
-          echo "Asset URL: $ASSET_URL" >> $GITHUB_ENV
+          echo "ASSET_URL=$(gh release view --json assets -q '.assets[0].browser_download_url')" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
