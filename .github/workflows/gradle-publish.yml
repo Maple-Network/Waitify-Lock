@@ -56,16 +56,20 @@ jobs:
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-    - name: Publish to GitHub Packages
-      if: success()
-      run: ./gradlew publish
-      env:
-        USERNAME: ${{ github.actor }}
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create Release
-      if: success()
+    - name: Create GitHub Release
+      id: create_release
       run: |
-        gh release create "${GITHUB_REF#refs/heads/}-$(date +%Y%m%d%H%M%S)" --title "$COMMIT_MESSAGE" --notes "$COMMIT_MESSAGE"
+        RELEASE_TAG=$(date +%Y%m%d%H%M%S) # or use your APK's version
+        gh release create $RELEASE_TAG \
+          --title "New Release $RELEASE_TAG" \
+          --notes "Automatically generated release" \
+          --draft
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload APK to Release
+      run: |
+        APK_PATH="./app/build/outputs/apk/release/app-release.apk" # Adjust this path to where your APK is located
+        gh release upload ${{ steps.create_release.outputs.tag_name }} "$APK_PATH" --clobber
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
