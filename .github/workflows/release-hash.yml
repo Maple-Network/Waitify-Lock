@@ -29,7 +29,7 @@ jobs:
 
       - name: Download release asset
         run: |
-          curl -L -o ./asset.apk -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$ASSET_URL"
+          curl -L -o ./asset.apk -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" $ASSET_URL
       
       - name: Calculate SHA-256 Hash
         run: |
