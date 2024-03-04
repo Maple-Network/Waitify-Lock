@@ -1,4 +1,4 @@
-name: Generate Release Hashes
+name: Generate Apk Hash
 
 on:
   release:
@@ -9,7 +9,7 @@ permissions:
   packages: write
 
 jobs:
-  generate_hashes:
+  generate_hash:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -36,16 +36,16 @@ jobs:
           # Use the asset download URL from the previous step
           curl -L -o ./asset.apk -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ steps.get-url.outputs.asset_url }}
       
-      - name: Calculate SHA-256 Hashe
+      - name: Calculate SHA-256 Hash
         run: |
-          sha256sum > hashe.txt
+          sha256sum > hash.txt
 
-      - name: Upload Hashe as Release Asset
+      - name: Upload Hash as Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./hashe.txt
-          asset_name: hashe.txt
+          asset_path: ./hash.txt
+          asset_name: hash.txt
           asset_content_type: text/plain
