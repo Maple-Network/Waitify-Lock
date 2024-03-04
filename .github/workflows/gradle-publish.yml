@@ -78,7 +78,7 @@ jobs:
     - name: Create GitHub Release
       id: create_release
       run: |
-        RELEASE_TAG=$(date +%Y%m%d%H%M%S) # or use your APK's version
+        RELEASE_TAG=v$VERSION_NAME
         echo "Creating release $RELEASE_TAG"
         gh release create $RELEASE_TAG \
           --title "$COMMIT_TITLE" \
