@@ -9,7 +9,7 @@ import androidx.security.crypto.MasterKeys;
 
 import java.util.EnumMap;
 
-import ca.maplenetwork.waitifylock.Helpers.PhoneHelper;
+import ca.maplenetwork.waitifylock.helpers.PhoneHelper;
 
 public class Variables {
     private static final EnumMap<PreferenceCategory, SharedPreferences> preferencesMap = new EnumMap<>(PreferenceCategory.class);
@@ -153,5 +153,13 @@ public class Variables {
     }
     public static boolean ProtectPermissions(Context context) {
         return preferences(context, PreferenceCategory.APP).getBoolean("ProtectPermissions", false);
+    }
+
+    //lastAppVersion
+    public static void lastAppVersion(Context context, int SetValue) {
+        setValue(context, "lastAppVersion", SetValue, VariableType.INTEGER, PreferenceCategory.APP);
+    }
+    public static int lastAppVersion(Context context) {
+        return preferences(context, PreferenceCategory.APP).getInt("lastAppVersion", 0);
     }
 }

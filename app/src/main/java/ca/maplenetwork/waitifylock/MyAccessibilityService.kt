@@ -6,16 +6,18 @@ import android.content.Intent
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import ca.maplenetwork.waitifylock.Helpers.NavigationHelper.openAndroidSettings
-import ca.maplenetwork.waitifylock.Helpers.UsageHelper
+import ca.maplenetwork.waitifylock.helpers.NavigationHelper.openAndroidSettings
+import ca.maplenetwork.waitifylock.helpers.UsageHelper
 
 class MyAccessibilityService : AccessibilityService() {
 
     companion object {
         private const val TAG = "MyAccessibilityService"
+        var accessibilityService: MyAccessibilityService? = null
     }
 
     override fun onServiceConnected() {
+        accessibilityService = this
         configureAccessibilityService()
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {UsageHelper.startLoop(this)}
 
@@ -33,7 +35,6 @@ class MyAccessibilityService : AccessibilityService() {
         val info = AccessibilityServiceInfo().apply {
             packageNames = appsEnabledArray
             eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
-            feedbackType = AccessibilityServiceInfo.FEEDBACK_VISUAL
         }
         serviceInfo = info
         Log.d(TAG, "Accessibility service configured for specific apps.")
@@ -46,6 +47,8 @@ class MyAccessibilityService : AccessibilityService() {
             handleProtectedServices(event)
         }
     }
+
+    override fun onInterrupt() {}
 
     private fun printNodeInfo(node: AccessibilityNodeInfo?, depth: Int = 0) {
         if (node == null) return
@@ -97,15 +100,5 @@ class MyAccessibilityService : AccessibilityService() {
         }
 
         return foundTexts.size == targetTexts.size
-    }
-
-
-    override fun onInterrupt() {
-        Log.d(TAG, "onInterrupt: Accessibility service interrupted.")
-    }
-
-    override fun onUnbind(intent: Intent): Boolean {
-        Log.d(TAG, "onUnbind: Unbinding service.")
-        return super.onUnbind(intent)
     }
 }

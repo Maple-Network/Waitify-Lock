@@ -18,10 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 
-import ca.maplenetwork.waitifylock.Helpers.AppLockHelper;
-import ca.maplenetwork.waitifylock.Helpers.NavigationHelper;
-import ca.maplenetwork.waitifylock.Helpers.PermissionHelper;
+import ca.maplenetwork.waitifylock.helpers.AppLockHelper;
+import ca.maplenetwork.waitifylock.helpers.DownloadHelper;
+import ca.maplenetwork.waitifylock.helpers.NavigationHelper;
+import ca.maplenetwork.waitifylock.helpers.PermissionHelper;
 import ca.maplenetwork.waitifylock.databinding.ActivityMainBinding;
+import ca.maplenetwork.waitifylock.helpers.VersionHelper;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
         loadAllOptions();
 
         setListeners();
+
+        VersionHelper.INSTANCE.startupCheck(this);
+        DownloadHelper.INSTANCE.downloadAndPromptInstall(this);
     }
 
     private void setListeners() {

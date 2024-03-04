@@ -7,22 +7,36 @@ android {
     namespace = "ca.maplenetwork.waitifylock"
     compileSdk = 34
 
+    signingConfigs {
+        create("release") {
+            keyAlias = System.getenv("KEY_ALIAS") ?: "defaultAlias"
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "defaultKeyPassword"
+            storeFile = file(System.getenv("KEYSTORE_PATH") ?: "defaultKeystorePath")
+            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "defaultStorePassword"
+        }
+    }
+
     viewBinding {
         enable = true
+    }
+    buildFeatures {
+        buildConfig = true
     }
 
     defaultConfig {
         applicationId = "ca.maplenetwork.waitifylock"
         minSdk = 26
         targetSdk = 34
-        versionCode = 5
-        versionName = "1.0.4"
+        versionCode = 6
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig = signingConfigs.getByName("release")
     }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

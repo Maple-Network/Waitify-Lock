@@ -2,4 +2,8 @@
     <string name="app_name">Waitify Lock</string>
     <string name="accessibility_service_description">Allows Waitify Lock to use the accessibility service to prevent permission removal when enabled.</string>
     <string name="device_admin_description">Allows Waitify Lock to prevent its own uninstallation when activated in settings.</string>
+    <string name="download_update_title">Update Availlable!</string>
+    <string name="download_update_message">Click install to update Waitify Lock to the latest version.</string>
+    <string name="install_button">Install</string>
+    <string name="cancel_button">Cancel</string>
 </resources>

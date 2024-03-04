@@ -1,4 +1,4 @@
-package ca.maplenetwork.waitifylock.Helpers
+package ca.maplenetwork.waitifylock.helpers
 
 import android.content.Context
 import android.content.Intent
@@ -28,6 +28,7 @@ object NavigationHelper {
     fun openAccessibilitySettings(context: Context) {
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         context.startActivity(intent)
     }
 
@@ -41,5 +42,12 @@ object NavigationHelper {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
             context.startActivity(intent)
         }
+    }
+
+    fun openSecutirySettings(context: Context) {
+        val intent = Intent(Settings.ACTION_PRIVACY_SETTINGS)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        context.startActivity(intent)
     }
 }

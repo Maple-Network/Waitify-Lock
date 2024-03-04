@@ -1,4 +1,4 @@
-package ca.maplenetwork.waitifylock.Helpers;
+package ca.maplenetwork.waitifylock.helpers;
 
 import android.content.Context;
 import android.provider.Settings;
