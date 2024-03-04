@@ -34,7 +34,7 @@ jobs:
 
     - name: Extract APK version
       run: |
-        VERSION_NAME=$(grep versionName app/build.gradle.kts | awk '{print $3}' | tr -d '"')
+        VERSION_NAME=$(grep versionCode app/build.gradle.kts | awk '{print $3}' | tr -d '"')
         echo "APK version: $VERSION_NAME"
         echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
 
