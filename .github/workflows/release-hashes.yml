@@ -3,6 +3,10 @@ name: Generate Release Hashes
 on:
   release:
     types: [published]
+    
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   generate_hashes:
