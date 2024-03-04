@@ -32,20 +32,20 @@ jobs:
         echo "COMMIT_TITLE=$COMMIT_TITLE" >> $GITHUB_ENV
         echo "COMMIT_DESCRIPTION=$COMMIT_DESCRIPTION" >> $GITHUB_ENV
 
-    - name: Extract APK version
-      run: |
-        VERSION_NAME=$(grep versionCode app/build.gradle.kts | awk '{print $3}' | tr -d '"')
-        echo "APK version: $VERSION_NAME"
-        echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
-
     - name: Check if Commit is a Release
       run: |
         if [[ "$COMMIT_TITLE" == Release* ]]; then
           echo "Proceeding with release actions..."
         else
           echo "Commit does not start with 'Release'. Skipping release actions."
-          exit 78
+          exit 0
         fi
+
+    - name: Extract APK version
+      run: |
+        VERSION_NAME=$(grep versionCode app/build.gradle.kts | awk '{print $3}' | tr -d '"')
+        echo "APK version: $VERSION_NAME"
+        echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
 
     - name: Set up JDK 17
       if: success()
@@ -65,7 +65,7 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build and Sign APK
-      run: ./gradlew assembleRelease
+      run: ./gradlew assembleRelease --stacktrace
       env:
         KEYSTORE_PATH: ${{ github.workspace }}/my-release-key.jks
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
