@@ -38,7 +38,7 @@ jobs:
           echo "Proceeding with release actions..."
         else
           echo "Commit does not start with 'Release'. Skipping release actions."
-          exit 0
+          exit 78
         fi
 
     - name: Set up JDK 17
@@ -84,7 +84,7 @@ jobs:
 
     - name: Upload APK to Release
       run: |
-        APK_PATH="${{ github.workspace }}/app/build/outputs/apk/release/app-release-unsigned.apk"
+        APK_PATH="${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk"
         gh release upload ${{ steps.create_release.outputs.tag_name }} "$APK_PATH" --clobber
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
