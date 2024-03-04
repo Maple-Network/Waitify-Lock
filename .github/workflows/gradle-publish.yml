@@ -1,0 +1,68 @@
+name: Gradle Package on Release Commit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Extract Commit Message
+      id: commit-message
+      run: |
+        COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+        echo "Commit message: $COMMIT_MESSAGE"
+        echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
+
+    - name: Check if Commit is a Release
+      run: |
+        if [[ "$COMMIT_MESSAGE" == Release* ]]; then
+          echo "Proceeding with release actions..."
+        else
+          echo "Commit does not start with 'Release'. Skipping release actions."
+          exit 78
+        fi
+
+    - name: Set up JDK 17
+      if: success()
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Setup Gradle
+      if: success()
+      uses: gradle/actions/setup-gradle@v3.1.0
+
+    - name: Decode keystore
+      run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > my-release-key.jks
+
+    - name: Build and Sign APK
+      run: ./gradlew assembleRelease
+      env:
+        KEYSTORE_PATH: ${{ github.workspace }}/my-release-key.jks
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+    - name: Publish to GitHub Packages
+      if: success()
+      run: ./gradlew publish
+      env:
+        USERNAME: ${{ github.actor }}
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release
+      if: success()
+      run: |
+        gh release create "${GITHUB_REF#refs/heads/}-$(date +%Y%m%d%H%M%S)" --title "$COMMIT_MESSAGE" --notes "$COMMIT_MESSAGE"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
