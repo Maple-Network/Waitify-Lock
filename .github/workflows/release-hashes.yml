@@ -10,28 +10,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
           java-version: '11'
+      
+      - name: Get release asset download URL
+        id: get-url
+        run: |
+          # Use GitHub CLI to get the asset download URL
+          ASSET_URL=$(gh release view --json assets -q '.assets[0].url')
+          echo "Asset URL: $ASSET_URL"
+          echo "::set-output name=asset_url::$ASSET_URL"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download release assets
-        id: download
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: "Maple-Network/Waitify-Lock"
-          version: "latest"
-          file: "*.apk"
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download release asset
+        run: |
+          # Use the asset download URL from the previous step
+          curl -L -o ./asset.apk -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ steps.get-url.outputs.asset_url }}
       
       - name: Calculate SHA-256 Hashes
         run: |
-          for file in *.apk; do
-            echo "$file" SHA-256 Hash:
-            sha256sum "$file"
-          done > hashes.txt
+          sha256sum ./asset.apk > hashes.txt
 
       - name: Upload Hashes as Release Asset
         uses: actions/upload-release-asset@v1
