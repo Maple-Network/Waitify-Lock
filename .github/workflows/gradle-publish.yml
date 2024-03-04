@@ -28,7 +28,7 @@ jobs:
           echo "Proceeding with release actions..."
         else
           echo "Commit does not start with 'Release'. Skipping release actions."
-          exit 78
+          exit 0
         fi
 
     - name: Set up JDK 17
