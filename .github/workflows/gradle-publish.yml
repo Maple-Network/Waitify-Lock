@@ -56,6 +56,9 @@ jobs:
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
+    - name: List APK files
+      run: ls -l ${{ github.workspace }}/app/build/outputs/apk/release/
+
     - name: Create GitHub Release
       id: create_release
       run: |
@@ -71,7 +74,7 @@ jobs:
 
     - name: Upload APK to Release
       run: |
-        APK_PATH="./app/build/outputs/apk/release/app-release.apk" # Adjust this path to where your APK is located
+        APK_PATH="${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk"
         gh release upload ${{ steps.create_release.outputs.tag_name }} "$APK_PATH" --clobber
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
