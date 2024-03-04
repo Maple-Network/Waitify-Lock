@@ -38,7 +38,8 @@ jobs:
       
       - name: Calculate SHA-256 Hash
         run: |
-          sha256sum > hash.txt
+          sha256sum ./asset.apk | awk '{print $1}' > hash.txt
+
 
       - name: Upload Hash as Release Asset
         uses: actions/upload-release-asset@v1
