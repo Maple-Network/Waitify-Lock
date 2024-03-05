@@ -38,7 +38,7 @@ jobs:
           echo "Proceeding with release actions..."
         else
           echo "Commit does not start with 'Release'. Skipping release actions."
-          exit 0
+          exit 78
         fi
 
     - name: Extract APK version
@@ -108,7 +108,8 @@ jobs:
     - name: Publish the draft release
       run: |
         RELEASE_ID=$(gh release view ${{ steps.create_release.outputs.tag_name }} --json id -q .id)
-        curl \
+        echo "Release ID: $RELEASE_ID"
+        curl -v \
           -X PATCH \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
