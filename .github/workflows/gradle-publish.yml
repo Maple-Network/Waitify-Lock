@@ -75,7 +75,8 @@ jobs:
     - name: Calculate SHA-256 Hash
       run: |
         APK_PATH="${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk"
-        sha256sum "$APK_PATH" | awk '{print $1}' > hash.txt
+        HASH_PATH="${{ github.workspace }}/hash.txt"
+        sha256sum "$APK_PATH" | awk '{print $1}' > "$HASH_PATH"
 
     - name: Create GitHub Release
       id: create_release
@@ -98,14 +99,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Hash as Release Asset
-      uses: actions/upload-release-asset@v1
+      run: |
+        HASH_PATH="${{ github.workspace }}/hash.txt"
+        gh release upload ${{ steps.create_release.outputs.tag_name }} "$HASH_PATH" --clobber
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./hash.txt
-        asset_name: hash.txt
-        asset_content_type: text/plain
 
     - name: Publish the draft release
       run: |
