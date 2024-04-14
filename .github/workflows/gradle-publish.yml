@@ -16,21 +16,22 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Extract Commit Message
-  id: commit-message
-  run: |
-    COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-    COMMIT_TITLE=$(echo "$COMMIT_MESSAGE" | head -n 1)
-    COMMIT_DESCRIPTION=$(echo "$COMMIT_MESSAGE" | tail -n +2 | sed '/^$/d' | tr '\n' ' ') # Replacing newlines with spaces
+      id: commit-message
+      run: |
+        COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+        COMMIT_TITLE=$(echo "$COMMIT_MESSAGE" | head -n 1)
+        COMMIT_DESCRIPTION=$(echo "$COMMIT_MESSAGE" | tail -n +2 | sed '/^$/d' | tr '\n' ' ') # Replacing newlines with spaces
+    
+        if [[ -z "$COMMIT_DESCRIPTION" ]]; then
+          echo "No commit description provided."
+          COMMIT_DESCRIPTION="No description"
+        fi
+    
+        echo "Commit title: $COMMIT_TITLE"
+        echo "Commit description: $COMMIT_DESCRIPTION"
+        echo "COMMIT_TITLE=$(echo $COMMIT_TITLE)" >> $GITHUB_ENV
+        echo "COMMIT_DESCRIPTION=$(echo $COMMIT_DESCRIPTION)" >> $GITHUB_ENV
 
-    if [[ -z "$COMMIT_DESCRIPTION" ]]; then
-      echo "No commit description provided."
-      COMMIT_DESCRIPTION="No description"
-    fi
-
-    echo "Commit title: $COMMIT_TITLE"
-    echo "Commit description: $COMMIT_DESCRIPTION"
-    echo "COMMIT_TITLE=$(echo $COMMIT_TITLE)" >> $GITHUB_ENV
-    echo "COMMIT_DESCRIPTION=$(echo $COMMIT_DESCRIPTION)" >> $GITHUB_ENV
 
     - name: Check if Commit is a Release
       run: |
