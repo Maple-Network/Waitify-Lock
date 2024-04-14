@@ -24,103 +24,355 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:minHeight="45dp"
-                android:orientation="horizontal">
+                android:layout_marginVertical="20dp"
+                android:background="@drawable/round_back_secondary_container"
+                android:orientation="vertical"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/explanation_text"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="0dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Allow accessibility service."
-                    android:textColor="?android:attr/colorForeground"
-                    android:textSize="20dp" />
+                    android:layout_marginVertical="8dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/allowAccessibilityButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Grant"
-                    android:textAlignment="center" />
+                    <ImageView
+                        android:id="@+id/start_setup_button_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/round_back_primary"
+                        android:padding="8dp"
+                        android:src="@drawable/round_settings_24"
+                        app:tint="@color/md_theme_onPrimary" />
+
+                    <TextView
+                        android:id="@+id/start_setup_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/icon_text_spacing"
+                        android:layout_toStartOf="@+id/start_setup_button"
+                        android:layout_toEndOf="@id/start_setup_button_icon"
+                        android:text="@string/start_waitify_setup_required"
+                        android:textColor="@color/md_theme_onSecondaryContainer"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/start_setup_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/start_waitify_setup_button" />
+                </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:minHeight="45dp"
-                android:orientation="horizontal">
+                android:layout_marginVertical="20dp"
+                android:background="@drawable/round_back_secondary_container"
+                android:orientation="vertical"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/explanation_text"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="0dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Allow usage access."
-                    android:textColor="?android:attr/colorForeground"
-                    android:textSize="20dp" />
+                    android:layout_marginVertical="8dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/usage_access_button"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/allowAccessibilityButton_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/round_back_primary"
+                        android:padding="8dp"
+                        android:src="@drawable/accessibility_24"
+                        app:tint="@color/md_theme_onPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/icon_text_spacing"
+                        android:layout_toStartOf="@+id/allowAccessibilityButton"
+                        android:layout_toEndOf="@id/allowAccessibilityButton_icon"
+                        android:text="@string/allow_accessibility_service"
+                        android:textColor="@color/md_theme_onSecondaryContainer"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/allowAccessibilityButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/grant" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Grant"
-                    android:textAlignment="center" />
+                    android:layout_marginVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/usage_access_button_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/round_back_primary"
+                        android:padding="8dp"
+                        android:src="@drawable/usage_24"
+                        app:tint="@color/md_theme_onPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/icon_text_spacing"
+                        android:layout_toStartOf="@+id/usage_access_button"
+                        android:layout_toEndOf="@id/usage_access_button_icon"
+                        android:text="@string/allow_usage_access"
+                        android:textColor="@color/md_theme_onSecondaryContainer"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/usage_access_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/grant" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/battery_optimization_button_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/round_back_primary"
+                        android:padding="8dp"
+                        android:src="@drawable/battery_status_good_24"
+                        app:tint="@color/md_theme_onPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/icon_text_spacing"
+                        android:layout_toStartOf="@+id/battery_optimization_button"
+                        android:layout_toEndOf="@id/battery_optimization_button_icon"
+                        android:text="@string/disable_battery_optimization"
+                        android:textColor="@color/md_theme_onSecondaryContainer"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/battery_optimization_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/grant" />
+                </RelativeLayout>
+
             </LinearLayout>
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/protectPermissionsSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:height="48dp"
-                android:text="Prevent changes to Waitify's Android permissions."
-                android:textSize="20sp" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/preventUninstallSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:height="48dp"
-                android:text="Prevent Waitify from being uninstalled."
-                android:textSize="20sp"
-                android:layout_marginVertical="4dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:minHeight="45dp"
-                android:orientation="horizontal">
+                android:layout_marginVertical="20dp"
+                android:background="@drawable/round_back_secondary_container"
+                android:orientation="vertical"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/explanation_text"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="0dp"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Pin to protect Waitify's settings."
-                    android:textColor="?android:attr/colorForeground"
-                    android:textSize="20dp" />
+                    android:layout_marginVertical="8dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/setAppLockPinButton"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/protectPermissionsSwitch_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/round_back_primary"
+                        android:padding="8dp"
+                        android:src="@drawable/android_24"
+                        app:tint="@color/md_theme_onPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/icon_text_spacing"
+                        android:layout_toStartOf="@+id/protectPermissionsSwitch"
+                        android:layout_toEndOf="@id/protectPermissionsSwitch_icon"
+                        android:text="@string/prevent_android_permissions"
+                        android:textColor="@color/md_theme_onSecondaryContainer"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/protectPermissionsSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Set Pin"
-                    android:textAlignment="center" />
+                    android:layout_marginVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/preventUninstallSwitch_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/round_back_primary"
+                        android:padding="8dp"
+                        android:src="@drawable/delete_24"
+                        app:tint="@color/md_theme_onPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/icon_text_spacing"
+                        android:layout_toStartOf="@+id/preventUninstallSwitch"
+                        android:layout_toEndOf="@id/preventUninstallSwitch_icon"
+                        android:text="@string/prevent_uninstall"
+                        android:textColor="@color/md_theme_onSecondaryContainer"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/preventUninstallSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
             </LinearLayout>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/appLockEnabledSwitch"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:height="48dp"
-                android:text="Protects Waitify's settings from being changed without a pin."
-                android:textSize="20sp" />
+                android:layout_marginVertical="20dp"
+                android:background="@drawable/round_back_secondary_container"
+                android:orientation="vertical"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/explanation_text"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/parental_lock_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/round_back_primary"
+                        android:padding="8dp"
+                        android:src="@drawable/outline_lock_24"
+                        app:tint="@color/md_theme_onPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/icon_text_spacing"
+                        android:layout_toStartOf="@+id/parental_lock"
+                        android:layout_toEndOf="@id/parental_lock_icon"
+                        android:text="@string/enable_parental_lock"
+                        android:textColor="@color/md_theme_onSecondaryContainer"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/parental_lock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/set_parental_pin_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/set_parental_pin_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/round_back_primary"
+                        android:padding="8dp"
+                        android:src="@drawable/key_24"
+                        app:tint="@color/md_theme_onPrimary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/icon_text_spacing"
+                        android:layout_toStartOf="@+id/set_parental_pin"
+                        android:layout_toEndOf="@id/set_parental_pin_icon"
+                        android:text="@string/set_parental_pin"
+                        android:textColor="@color/md_theme_onSecondaryContainer"
+                        android:textSize="@dimen/text_size"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/set_parental_pin"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="@dimen/min_container_size"
 
 
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:paddingHorizontal="5dp"
+                        android:paddingVertical="6dp"
+
+                        app:cornerRadius="9dp"
+                        android:maxLines="1"
+                        android:background="@drawable/duration_button_back"
+
+                        android:foreground="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:soundEffectsEnabled="true"
+
+                        android:text="@string/parental_pin_set"
+                        android:textColor="@color/md_theme_onSurface"
+                        android:textSize="@dimen/text_size_small"
+                        android:textAlignment="center" />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

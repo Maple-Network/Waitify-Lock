@@ -3,11 +3,11 @@ package ca.maplenetwork.waitifylock.helpers
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.core.content.FileProvider
 import ca.maplenetwork.waitifylock.BuildConfig
 import ca.maplenetwork.waitifylock.R
+import ca.maplenetwork.waitifylock.Variables
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,7 +39,8 @@ object DownloadHelper {
             }
 
             return true
-        } finally {
+        } catch (_: Exception) {}
+        finally {
             connection?.disconnect()
         }
         return false
@@ -193,6 +194,7 @@ object DownloadHelper {
             if (releaseInfo != null && releaseInfo.version > getCurrentAppVersion()) {
                 try {
                     val apk = downloadWaitifyLock(releaseInfo, releaseInfo.url, context)
+                    if (Variables.AppLocked(context)) return@launch
                     CoroutineScope(Dispatchers.Main).launch {
                         AlertDialog.Builder(context).apply {
                             setTitle(context.getString(R.string.download_update_title))

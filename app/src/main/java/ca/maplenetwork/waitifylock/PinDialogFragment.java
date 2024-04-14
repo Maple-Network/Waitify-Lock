@@ -15,16 +15,18 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 
+import ca.maplenetwork.waitifylock.helpers.DownloadHelper;
+
 public class PinDialogFragment extends DialogFragment {
     private EditText pinEditText;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        View view = inflater.inflate(R.layout.pin_dialog, null);
+        View view = inflater.inflate(R.layout.dialog_parental_unlock, null);
         pinEditText = view.findViewById(R.id.pinEditText);
         MaterialCheckBox showPinCheckBox = view.findViewById(R.id.showPinCheckBox);
 
@@ -42,6 +44,7 @@ public class PinDialogFragment extends DialogFragment {
                     return;
                 }
                 Variables.AppLocked(getContext(), false);
+                DownloadHelper.INSTANCE.downloadAndPromptInstall(requireContext());
                 dismiss();
             });
         });

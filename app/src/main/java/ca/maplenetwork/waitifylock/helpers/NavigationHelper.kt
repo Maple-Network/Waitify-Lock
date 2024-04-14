@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import ca.maplenetwork.waitifylock.MainActivity
+import ca.maplenetwork.waitifylock.ui.setup.SetupActivity
 
 object NavigationHelper {
     fun openMainMenu(context: Context) {
@@ -12,7 +13,12 @@ object NavigationHelper {
         context.startActivity(intent)
     }
 
-    fun openHomeScreen(context: Context) {
+    fun openSetupActivity(context: Context) {
+        val intent = Intent(context, SetupActivity::class.java)
+        context.startActivity(intent)
+    }
+
+    fun openAndroidHome(context: Context) {
         val homeIntent = Intent(Intent.ACTION_MAIN)
         homeIntent.addCategory(Intent.CATEGORY_HOME)
         context.startActivity(homeIntent)
@@ -42,12 +48,5 @@ object NavigationHelper {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
             context.startActivity(intent)
         }
-    }
-
-    fun openSecutirySettings(context: Context) {
-        val intent = Intent(Settings.ACTION_PRIVACY_SETTINGS)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        context.startActivity(intent)
     }
 }

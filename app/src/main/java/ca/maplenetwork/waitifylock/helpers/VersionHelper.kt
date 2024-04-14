@@ -1,7 +1,6 @@
 package ca.maplenetwork.waitifylock.helpers
 
 import android.content.Context
-import android.util.Log
 import ca.maplenetwork.waitifylock.BuildConfig
 import ca.maplenetwork.waitifylock.Variables
 import kotlinx.coroutines.CoroutineScope

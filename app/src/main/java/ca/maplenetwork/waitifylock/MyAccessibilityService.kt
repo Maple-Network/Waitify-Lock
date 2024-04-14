@@ -19,7 +19,8 @@ class MyAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         accessibilityService = this
         configureAccessibilityService()
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {UsageHelper.startLoop(this)}
+        MyReceiver().registerReceiver(this)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {UsageHelper.start(this)}
 
         Log.d(TAG, "Service connected and configured.")
     }

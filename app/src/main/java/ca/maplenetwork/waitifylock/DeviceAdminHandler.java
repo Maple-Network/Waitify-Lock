@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.UserHandle;
 
-public class DeviceAdminSample extends DeviceAdminReceiver {
+public class DeviceAdminHandler extends DeviceAdminReceiver {
     @Override
     public void onEnabled(Context context, Intent intent) {}
 

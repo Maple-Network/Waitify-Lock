@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="icon_text_spacing">12dp</dimen>
+    <dimen name="text_size">20sp</dimen>
+
+    <dimen name="text_size_small">15sp</dimen>
+    <dimen name="min_container_size">69sp</dimen>
+    <dimen name="min_container_size_time">84sp</dimen>
+</resources>

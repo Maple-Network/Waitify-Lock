@@ -2,8 +2,92 @@
     <string name="app_name">Waitify Lock</string>
     <string name="accessibility_service_description">Allows Waitify Lock to use the accessibility service to prevent permission removal when enabled.</string>
     <string name="device_admin_description">Allows Waitify Lock to prevent its own uninstallation when activated in settings.</string>
-    <string name="download_update_title">Update Availlable!</string>
-    <string name="download_update_message">Click install to update Waitify Lock to the latest version.</string>
-    <string name="install_button">Install</string>
+
+    <!--Screen Global-->
     <string name="cancel_button">Cancel</string>
+    <string name="accept_button">Accept</string>
+    <string name="back_button">Back</string>
+
+    <string name="save_button">Save</string>
+    <string name="decline_button">Decline</string>
+    <string name="next_button">Next</string>
+    <string name="yes_button">Yes</string>
+    <string name="open">Open</string>
+    <string name="ok_button">OK</string>
+    <string name="install_button">Install</string>
+    <string name="grant">Grant</string>
+
+    <string name="skip_button">Skip</string>
+    <string name="loading_dialog">Loading…</string>
+
+    <!--Notifications-->
+    <string name="update_notification_title">Update Available</string>
+    <string name="update_notification_message">Click to update Waitify Lock to the latest version.</string>
+
+    <!--Main Activity-->
+    <string name="prevent_android_permissions">Prevent changes to Waitify\'s Android permissions.</string>
+    <string name="allow_accessibility_service">Allow accessibility service</string>
+    <string name="allow_usage_access">Allow usage access</string>
+    <string name="disable_battery_optimization">Disable battery optimization</string>
+    <string name="start_waitify_setup_required">Setup required</string>
+    <string name="start_waitify_setup_not_required">App running</string>
+    <string name="start_waitify_setup_button">Start Setup</string>
+
+    <!--Update-->
+    <string name="download_update_title">Update Available!</string>
+    <string name="download_update_message">Click install to update Waitify Lock to the latest version.</string>
+
+    <!--Parental Pin-->
+    <string name="parental_pin_set">Pin set</string>
+    <string name="parental_pin_unset">Pin unset</string>
+    <string name="parental_pin_guidelines">PINs must match and cannot be empty</string>
+
+    <!-- Setup -->
+    <string name="exit_setup_title">Exit Setup</string>
+    <string name="exit_setup_message">Are you sure you want to exit the setup?</string>
+
+    <string name="skip_permission_title">Skip Permission</string>
+    <string name="skip_permission_message">Are you sure you want to skip this part of the setup?</string>
+
+    <string name="enable_it_dialog">Please enable it on the next screen.</string>
+
+        <!-- Setup Fragment -->
+        <string name="welcome_to_waitify">Setup Waitify Lock!</string>
+        <string name="waitify_setup_quip">Time to prevent Waitify bypasses</string>
+        <string name="should_only_take_a_minute">Should only take a minute</string>
+        <string name="setup_start_button">Start setup</string>
+        <string name="il_set_it_up_myself">Il set it up myself</string>
+
+        <string name="usage_access_title">Usage Access</string>
+        <string name="usage_access_explanation">Waitify lock needs the usage access permission to see when bypasses may occur.</string>
+
+        <string name="accessibility_title">Accessibility</string>
+        <string name="accessibility_explanation">Waitify lock needs the accessibility permission to detect when you attempt to disable core permissions.</string>
+
+        <string name="battery_optimizations_title">Battery Optimizations</string>
+        <string name="battery_optimizations_explanation">Waitify lock needs to be exempt from battery optimizations to not get automatically disabled by the system.</string>
+
+        <string name="notifications_title">Notifications</string>
+        <string name="notifications_explanation">Waitify lock would benefit from having notifications by letting you know when a update is available.</string>
+
+        <string name="parental_pin_title">Parental Pin</string>
+        <string name="parental_pin_explanation">Waitify lock needs a parental pin to prevent children from disabling the app.</string>
+        <string name="enable_parental_lock">Enable parental lock</string>
+        <string name="set_parental_pin">Set parental pin</string>
+
+        <string name="uninstall_protection_title">Uninstall Protection</string>
+        <string name="uninstall_protection_explanation">Waitify lock needs uninstall protection to prevent people from uninstalling the app.</string>
+        <string name="prevent_uninstall">Prevent Waitify lock uninstall</string>
+
+        <!-- Setup Finish -->
+        <string name="waitify_setup_complete">Waitify lock setup complete!</string>
+        <string name="waitify_setup_quip_finish">Waitify bypasses no more</string>
+
+        <string name="waitify_running_true">Waitify lock is preventing uninstalls, no more setup required.</string>
+        <string name="waitify_running_false">Waitify lock is not preventing uninstalls, more setup required.</string>
+
+        <string name="edit_waitify">Edit Waitify Lock Settings</string>
+        <string name="exit_waitify">Exit Waitify Lock</string>
+        <string name="exit_waitify_running_false_title">Waitify lock is Not Running</string>
+        <string name="exit_waitify_running_false_message">Waitify lock is not preventing uninstalls. Are you sure you want to exit the app?</string>
 </resources>

@@ -4,6 +4,7 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +19,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 
+import ca.maplenetwork.waitifylock.databinding.ActivityMainBinding;
 import ca.maplenetwork.waitifylock.helpers.AppLockHelper;
 import ca.maplenetwork.waitifylock.helpers.DownloadHelper;
 import ca.maplenetwork.waitifylock.helpers.NavigationHelper;
+import ca.maplenetwork.waitifylock.helpers.NotificationHelper;
 import ca.maplenetwork.waitifylock.helpers.PermissionHelper;
-import ca.maplenetwork.waitifylock.databinding.ActivityMainBinding;
+import ca.maplenetwork.waitifylock.helpers.UsageHelper;
 import ca.maplenetwork.waitifylock.helpers.VersionHelper;
+import io.sentry.Sentry;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
+    public static final int MY_PERMISSIONS_REQUEST_POST_NOTIFICATIONS = 1;
 
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
@@ -39,10 +44,21 @@ public class MainActivity extends AppCompatActivity {
         setListeners();
 
         VersionHelper.INSTANCE.startupCheck(this);
+
+        NotificationHelper.INSTANCE.createNotificationGroups(this);
+
         DownloadHelper.INSTANCE.downloadAndPromptInstall(this);
+
+        if (!PermissionHelper.INSTANCE.isAppEnabled(this)) {
+            NavigationHelper.INSTANCE.openSetupActivity(this);
+        }
     }
 
     private void setListeners() {
+        binding.startSetupButton.setOnClickListener((view) -> {
+            NavigationHelper.INSTANCE.openSetupActivity(this);
+        });
+
         binding.allowAccessibilityButton.setOnClickListener((view) -> {
             NavigationHelper.INSTANCE.openAccessibilitySettings(this);
         });
@@ -51,12 +67,20 @@ public class MainActivity extends AppCompatActivity {
             NavigationHelper.INSTANCE.openUsageAccessSettings(this);
         });
 
+        binding.batteryOptimizationButton.setOnClickListener((view) -> {
+            PermissionHelper.BatteryOptimization.INSTANCE.request(this);
+        });
+
         binding.protectPermissionsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (AppLocked()) {
                 return;
             }
 
             Variables.ProtectPermissions(this, isChecked);
+            updateAppRunning(false);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) { return; }
+            if (isChecked) { UsageHelper.INSTANCE.start(this); } else { UsageHelper.INSTANCE.stop(); }
         });
 
         binding.preventUninstallSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -65,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             DevicePolicyManager mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-            ComponentName mAdminName = new ComponentName(this, DeviceAdminSample.class);
+            ComponentName mAdminName = new ComponentName(this, DeviceAdminHandler.class);
             if (isChecked) {
                 if (!mDPM.isAdminActive(mAdminName)) {
                     Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
@@ -75,10 +99,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (mDPM.isAdminActive(mAdminName)) {
                 mDPM.removeActiveAdmin(mAdminName);
+                updateAppRunning(true);
             }
         });
 
-        binding.appLockEnabledSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.parentalLock.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (AppLocked()) {
                 return;
             }
@@ -87,13 +112,13 @@ public class MainActivity extends AppCompatActivity {
             Variables.AppLocked(this, false);
         });
 
-        binding.setAppLockPinButton.setOnClickListener(v -> {
+        binding.setParentalPin.setOnClickListener(v -> {
             if (AppLocked()) {
                 return;
             }
 
             LayoutInflater inflater = getLayoutInflater();
-            View view = inflater.inflate(R.layout.pin_dialog_layout, null);
+            View view = inflater.inflate(R.layout.dialog_parental_set, null);
             EditText pinEditText = view.findViewById(R.id.pinEditText);
             EditText confirmPinEditText = view.findViewById(R.id.confirmPinEditText);
             MaterialCheckBox showPinCheckBox = view.findViewById(R.id.showPinCheckBox);
@@ -121,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     Variables.AppLockPin(this, pin);
+                    refreshIsPinSet();
                     dialog.dismiss();
                 });
             });
@@ -140,20 +166,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void refreshIsPinSet() {
+        boolean isPinSet = Variables.AppLockEnabled(this);
+        binding.setParentalPin.setText(isPinSet ? getText(R.string.parental_pin_set) : getText(R.string.parental_pin_unset));
+    }
+
     private boolean AppLocked() {
         return Variables.AppLocked(this) && Variables.AppLockEnabled(this);
     }
 
+    private void updateAppRunning(boolean forceOff) {
+        boolean appRunning;
+        if (forceOff) { appRunning = false; } else { appRunning = PermissionHelper.INSTANCE.isAppEnabled(this); }
+        binding.startSetupButton.setEnabled(!appRunning);
+        binding.startSetupText.setText(appRunning ? R.string.start_waitify_setup_not_required : R.string.start_waitify_setup_required);
+    }
     private void loadAllOptions() {
-        boolean isAdminActive = ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).isAdminActive(new ComponentName(this, DeviceAdminSample.class));
+        boolean isAdminActive = ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).isAdminActive(new ComponentName(this, DeviceAdminHandler.class));
 
+        updateAppRunning(false);
         binding.allowAccessibilityButton.setEnabled(!PermissionHelper.INSTANCE.isAccessibilityServiceGranted(this));
         binding.usageAccessButton.setEnabled(!PermissionHelper.INSTANCE.isUsageAccessGranted(this));
+        binding.batteryOptimizationButton.setEnabled(!PermissionHelper.BatteryOptimization.INSTANCE.isDisabled(this));
 
         binding.protectPermissionsSwitch.setChecked(Variables.ProtectPermissions(this));
         binding.preventUninstallSwitch.setChecked(isAdminActive);
 
-        binding.appLockEnabledSwitch.setChecked(Variables.AppLockEnabled(this));
+        binding.parentalLock.setChecked(Variables.AppLockEnabled(this));
+        refreshIsPinSet();
     }
 
     private final ActivityResultLauncher<Intent> deviceAdminResultLauncher = registerForActivityResult(
@@ -177,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             AppLockHelper.showAppLock(this, getSupportFragmentManager());
         } catch (Exception e) {
-            NavigationHelper.INSTANCE.openHomeScreen(this);
+            NavigationHelper.INSTANCE.openAndroidHome(this);
         }
         loadAllOptions();
     }
