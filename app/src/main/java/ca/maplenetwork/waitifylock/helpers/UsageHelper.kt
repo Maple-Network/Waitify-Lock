@@ -80,9 +80,10 @@ object UsageHelper {
         currentLoop?.start()
     }
 
-    fun stop() {
+    fun stop(context: Context) {
         Log.d(TAG, "stop: Stopping loop.")
         queueStop = true
+        MyReceiver.statusUpdate(context)
     }
 
     private fun canRun(context: Context): Boolean {

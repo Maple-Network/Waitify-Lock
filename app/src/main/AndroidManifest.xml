@@ -73,11 +73,12 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <!--<receiver android:name=".MyReceiver"
+        <receiver android:name=".MyReceiver"
             android:exported="true">
             <intent-filter>
+                <action android:name="ca.maplenetwork.waitifylock.action.CHECK_STATUS" />
             </intent-filter>
-        </receiver>-->
+        </receiver>
 
         <!-- Required: set your sentry.io project identifier (DSN) -->
         <meta-data android:name="io.sentry.dsn" android:value="${sentryDsn}" />

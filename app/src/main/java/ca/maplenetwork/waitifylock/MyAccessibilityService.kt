@@ -20,6 +20,7 @@ class MyAccessibilityService : AccessibilityService() {
         accessibilityService = this
         configureAccessibilityService()
         MyReceiver().registerReceiver(this)
+        MyReceiver.statusUpdate(this)
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {UsageHelper.start(this)}
 
         Log.d(TAG, "Service connected and configured.")
@@ -49,7 +50,11 @@ class MyAccessibilityService : AccessibilityService() {
         }
     }
 
-    override fun onInterrupt() {}
+    override fun onInterrupt() { MyReceiver.statusUpdate(this) }
+    override fun onUnbind(intent: Intent?): Boolean {
+        MyReceiver.statusUpdate(this)
+        return super.onUnbind(intent)
+    }
 
     private fun printNodeInfo(node: AccessibilityNodeInfo?, depth: Int = 0) {
         if (node == null) return

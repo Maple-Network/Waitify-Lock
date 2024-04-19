@@ -78,9 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
             Variables.ProtectPermissions(this, isChecked);
             updateAppRunning(false);
+            MyReceiver.Companion.statusUpdate(this, null);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) { return; }
-            if (isChecked) { UsageHelper.INSTANCE.start(this); } else { UsageHelper.INSTANCE.stop(); }
+            if (isChecked) { UsageHelper.INSTANCE.start(this); } else { UsageHelper.INSTANCE.stop(this); }
         });
 
         binding.preventUninstallSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

@@ -25,7 +25,7 @@ object PermissionHelper {
         val mDPM by lazy { context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager }
         val mAdminName by lazy { ComponentName(context, DeviceAdminHandler::class.java) }
 
-        return isUsageAccessGranted(context) && isAccessibilityServiceGranted(context) && Variables.ProtectPermissions(context) && mDPM.isAdminActive(mAdminName)
+        return (isUsageAccessGranted(context) || Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) && isAccessibilityServiceGranted(context) && Variables.ProtectPermissions(context) && mDPM.isAdminActive(mAdminName)
     }
     fun isAccessibilityServiceGranted(context: Context): Boolean {
         val expectedComponentName = ComponentName(context, MyAccessibilityService::class.java)
